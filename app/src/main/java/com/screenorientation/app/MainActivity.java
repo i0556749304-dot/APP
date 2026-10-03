@@ -48,9 +48,9 @@ public class MainActivity extends android.app.Activity {
 
         LinearLayout current=card(); addTop(current,18);
         current.addView(icon(R.drawable.ic_auto,40),lp(-1,dp(40)));
-        TextView ct=text("מצב נוכחי",13,muted,true); addTop(current,8); current.addView(ct,lp(-1,-2));
-        TextView cm=text(OrientationUtils.currentLabel(this),24,ink,true); addTop(current,6); current.addView(cm,lp(-1,-2));
-        TextView hint=text("שנה את הכיוון בלחיצה אחת",13,muted,false); addTop(current,3); current.addView(hint,lp(-1,-2));
+        TextView ct=text("מצב נוכחי",13,muted,true); addTopTo(current,8); current.addView(ct,lp(-1,-2));
+        TextView cm=text(OrientationUtils.currentLabel(this),24,ink,true); addTopTo(current,6); current.addView(cm,lp(-1,-2));
+        TextView hint=text("שנה את הכיוון בלחיצה אחת",13,muted,false); addTopTo(current,3); current.addView(hint,lp(-1,-2));
 
         TextView choose=text("בחר כיוון",19,ink,true); addTop(choose,24);
         addChoice("אוטומטי","לפי חיישן התנועה",R.drawable.ic_auto,OrientationUtils.AUTO);
@@ -75,7 +75,7 @@ public class MainActivity extends android.app.Activity {
         ImageView iv=icon(iconRes,34); row.addView(iv,lp(dp(42),dp(42)));
         LinearLayout words=new LinearLayout(this); words.setOrientation(LinearLayout.VERTICAL); words.setGravity(Gravity.RIGHT);
         TextView t=text(title,16,ink,true); words.addView(t,lp(-1,-2));
-        TextView d=text(desc,12,muted,false); addTop(words,3); words.addView(d,lp(-1,-2));
+        TextView d=text(desc,12,muted,false); addTopTo(words,3); words.addView(d,lp(-1,-2));
         LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(0,-2,1); wp.setMargins(dp(12),0,0,0); row.addView(words,wp);
         row.setOnClickListener(v->apply(mode)); addTop(row,9);
     }
@@ -86,7 +86,7 @@ public class MainActivity extends android.app.Activity {
         ImageView iv=icon(iconRes,32); row.addView(iv,lp(dp(40),dp(40)));
         LinearLayout words=new LinearLayout(this); words.setOrientation(LinearLayout.VERTICAL); words.setGravity(Gravity.RIGHT);
         TextView t=text(title,16,ink,true); words.addView(t,lp(-1,-2));
-        TextView d=text(desc,12,muted,false); addTop(words,3); words.addView(d,lp(-1,-2));
+        TextView d=text(desc,12,muted,false); addTopTo(words,3); words.addView(d,lp(-1,-2));
         LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(0,-2,1); wp.setMargins(dp(12),0,0,0); row.addView(words,wp);
         TextView mark=text(selected?"✓":"",22,primary,true); mark.setGravity(Gravity.CENTER); row.addView(mark,lp(dp(28),dp(28)));
         row.setOnClickListener(v->{OrientationUtils.setTileMode(this,mode); refresh();}); addTop(row,9);
