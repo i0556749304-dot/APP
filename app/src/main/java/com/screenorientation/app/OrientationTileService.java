@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-gimport android.graphics.drawable.Icon;
+import android.graphics.drawable.Icon;
 
 public class OrientationTileService extends TileService {
     @Override public void onStartListening(){ super.onStartListening(); updateTile(); }
