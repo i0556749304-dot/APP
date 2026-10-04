@@ -1,6 +1,8 @@
 package com.screenorientation.app;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -9,9 +11,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class MainActivity extends android.app.Activity {
@@ -28,6 +32,7 @@ public class MainActivity extends android.app.Activity {
         addChoice("אוטומטי",R.drawable.ic_auto,OrientationUtils.AUTO);addChoice("אנכי",R.drawable.ic_portrait,OrientationUtils.PORTRAIT);addChoice("אופקי",R.drawable.ic_landscape,OrientationUtils.LANDSCAPE);addChoice("אנכי הפוך",R.drawable.ic_portrait_reverse,OrientationUtils.PORTRAIT_REVERSE);addChoice("אופקי הפוך",R.drawable.ic_landscape_reverse,OrientationUtils.LANDSCAPE_REVERSE);
         addTop(text("הגדרת כפתור ההגדרות המהירות",19,blue,true),26);addTop(text("בחר מה יקרה בכל לחיצה על האריח",13,blueSoft,false),4);
         addTileMode("אנכי ↔ אופקי","לחיצה מחליפה בין לאורך לרוחב",R.drawable.ic_toggle,OrientationUtils.TILE_TOGGLE);addTileMode("כל האפשרויות","מעבר בין כל מצבי התצוגה",R.drawable.ic_cycle,OrientationUtils.TILE_ALL);
+        addLauncherSetting();
         if(!Settings.System.canWrite(this)){LinearLayout p=card();TextView a=text("נדרשת הרשאת מערכת",14,blue,true);a.setGravity(Gravity.CENTER);p.addView(a,lp(-1,-2));TextView b=text("לחץ כאן כדי לאפשר לאפליקציה לשנות את כיוון המסך",12,blueSoft,false);b.setGravity(Gravity.CENTER);addTopTo(p,4);p.addView(b,lp(-1,-2));p.setOnClickListener(v->requestWritePermission());addTop(p,18);}
         addCredits();
     }
@@ -37,13 +42,21 @@ public class MainActivity extends android.app.Activity {
     }
     private int iconForMode(int m){switch(m){case OrientationUtils.PORTRAIT:return R.drawable.ic_portrait;case OrientationUtils.LANDSCAPE:return R.drawable.ic_landscape;case OrientationUtils.PORTRAIT_REVERSE:return R.drawable.ic_portrait_reverse;case OrientationUtils.LANDSCAPE_REVERSE:return R.drawable.ic_landscape_reverse;default:return R.drawable.ic_auto;}}
     private void addChoice(String title,int iconRes,final int mode){
-        LinearLayout row=card();
-        row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);row.setPadding(dp(14),dp(10),dp(14),dp(10));
+        LinearLayout row=card();row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);row.setPadding(dp(14),dp(10),dp(14),dp(10));
         ImageView iv=icon(iconRes,44);row.addView(iv,lp(dp(54),dp(54)));
         LinearLayout words=new LinearLayout(this);words.setOrientation(LinearLayout.VERTICAL);words.setGravity(Gravity.RIGHT);words.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);words.addView(text(title,17,blueDark,true),lp(-1,-2));LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(0,-2,1);wp.setMargins(dp(12),0,0,0);row.addView(words,wp);
         row.setOnClickListener(v->apply(mode));addTop(row,8);
     }
     private void addTileMode(String title,String desc,int iconRes,final int mode){boolean selected=OrientationUtils.getTileMode(this)==mode;LinearLayout row=card();row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);row.setPadding(dp(12),dp(11),dp(14),dp(11));row.addView(icon(iconRes,42),lp(dp(50),dp(50)));LinearLayout words=new LinearLayout(this);words.setOrientation(LinearLayout.VERTICAL);words.setGravity(Gravity.RIGHT);words.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);words.addView(text(title,16,blueDark,true),lp(-1,-2));addTopTo(words,3);words.addView(text(desc,12,blueSoft,false),lp(-1,-2));LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(0,-2,1);wp.setMargins(dp(12),0,0,0);row.addView(words,wp);TextView mark=text(selected?"✓":"",22,blue,true);mark.setGravity(Gravity.CENTER);row.addView(mark,lp(dp(28),dp(28)));row.setOnClickListener(v->{OrientationUtils.setTileMode(this,mode);refresh();});addTop(row,8);}
+    private void addLauncherSetting(){
+        addTop(text("הגדרות האפליקציה",19,blue,true),26);
+        LinearLayout row=card();row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);row.setPadding(dp(14),dp(8),dp(14),dp(8));
+        Switch sw=new Switch(this);sw.setChecked(isLauncherVisible());sw.setButtonTintList(null);row.addView(sw,lp(dp(58),dp(52)));
+        LinearLayout words=new LinearLayout(this);words.setOrientation(LinearLayout.VERTICAL);words.setGravity(Gravity.RIGHT);words.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);words.addView(text("הצג סמל האפליקציה בלאנצ'ר",16,blueDark,true),lp(-1,-2));addTopTo(words,3);words.addView(text("הצג או הסתר את סמל כיוון מסך ממסך האפליקציות",12,blueSoft,false),lp(-1,-2));LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(0,-2,1);wp.setMargins(dp(12),0,0,0);row.addView(words,wp);
+        sw.setOnCheckedChangeListener((button,checked)->setLauncherVisible(checked));row.setOnClickListener(v->{if(v!=sw)sw.setChecked(!sw.isChecked());});addTop(row,8);
+    }
+    private boolean isLauncherVisible(){ComponentName c=new ComponentName(this,getPackageName()+".LauncherAlias");return getPackageManager().getComponentEnabledSetting(c)!=PackageManager.COMPONENT_ENABLED_STATE_DISABLED;}
+    private void setLauncherVisible(boolean visible){ComponentName c=new ComponentName(this,getPackageName()+".LauncherAlias");getPackageManager().setComponentEnabledSetting(c,visible?PackageManager.COMPONENT_ENABLED_STATE_ENABLED:PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);}
     private void addCredits(){LinearLayout c=card();c.setGravity(Gravity.CENTER);addTop(c,24);TextView made=text("פותח ע\"י",11,blueSoft,false);made.setGravity(Gravity.CENTER);c.addView(made,lp(-1,-2));TextView cyber=text("הסייבריסט",14,blue,false);cyber.setGravity(Gravity.CENTER);addTopTo(c,2);c.addView(cyber,lp(-1,-2));cyber.setOnClickListener(v->open("https://mitmachim.top/user/%D7%94%D7%A1%D7%99%D7%99%D7%91%D7%A8%D7%99%D7%A1%D7%98"));TextView forum=text("פורום מתמחים טופ",10,blueSoft,false);forum.setGravity(Gravity.CENTER);addTopTo(c,1);c.addView(forum,lp(-1,-2));forum.setOnClickListener(v->open("https://mitmachim.top/user/%D7%94%D7%A1%D7%99%D7%99%D7%91%D7%A8%D7%99%D7%A1%D7%98"));TextView rights=text("© 2026 · כל הזכויות שמורות",9,blueSoft,false);rights.setGravity(Gravity.CENTER);addTopTo(c,7);c.addView(rights,lp(-1,-2));TextView source=text("קוד המקור ב-GitHub",10,blueSoft,false);source.setGravity(Gravity.CENTER);addTopTo(c,6);c.addView(source,lp(-1,-2));source.setOnClickListener(v->open("https://github.com/i0556749304-dot/APP"));}
     private void apply(int mode){if(mode!=OrientationUtils.AUTO&&!Settings.System.canWrite(this)){requestWritePermission();return;}if(OrientationUtils.apply(this,mode))refresh();}
     private void requestWritePermission(){try{startActivity(new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS,Uri.parse("package:"+getPackageName())));}catch(Exception e){startActivity(new Intent(Settings.ACTION_SETTINGS));}}
