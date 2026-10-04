@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <application android:theme="@style/Theme.ScreenOrientation" android:label="כיוון מסך" android:icon="@drawable/ic_launcher" android:roundIcon="@drawable/ic_launcher" android:allowBackup="true" android:supportsRtl="true">
-        <activity android:name=".MainActivity" android:exported="true">
+        <activity android:name=".MainActivity" android:exported="true" />
+        <activity-alias android:name=".LauncherAlias" android:targetActivity=".MainActivity" android:enabled="true" android:exported="true" android:icon="@drawable/ic_launcher" android:label="כיוון מסך">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
         <service android:name=".OrientationTileService" android:label="כיוון מסך" android:icon="@drawable/ic_qs_auto" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE" android:exported="true">
             <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
         </service>
