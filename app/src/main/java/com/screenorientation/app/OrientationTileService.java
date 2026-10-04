@@ -29,10 +29,10 @@ public class OrientationTileService extends TileService {
     private int iconFor(int mode){
         switch(mode){
             case OrientationUtils.LANDSCAPE:
-            case OrientationUtils.LANDSCAPE_REVERSE:return com.screenorientation.app.R.drawable.ic_landscape;
+            case OrientationUtils.LANDSCAPE_REVERSE:return R.drawable.ic_qs_landscape;
             case OrientationUtils.PORTRAIT:
-            case OrientationUtils.PORTRAIT_REVERSE:return com.screenorientation.app.R.drawable.ic_portrait;
-            default:return com.screenorientation.app.R.drawable.ic_auto;
+            case OrientationUtils.PORTRAIT_REVERSE:return R.drawable.ic_qs_portrait;
+            default:return R.drawable.ic_qs_auto;
         }
     }
 }
