@@ -20,10 +20,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Build debug APK
+      - name: Prepare exact supplied launcher image
         run: |
           rm -f app/src/main/res/drawable-nodpi/icon_custom_base64.txt
-          gradle --no-daemon assembleDebug
+          base64 -d build-assets/icon_custom_base64.txt > app/src/main/res/drawable-nodpi/ic_launcher_exact.png
+          file app/src/main/res/drawable-nodpi/ic_launcher_exact.png
+      - name: Build debug APK
+        run: gradle --no-daemon assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
