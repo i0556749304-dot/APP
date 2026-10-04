@@ -23,7 +23,7 @@ jobs:
       - name: Prepare exact supplied launcher image
         run: |
           rm -f app/src/main/res/drawable-nodpi/icon_custom_base64.txt
-          base64 -d build-assets/icon_custom_base64.txt > app/src/main/res/drawable-nodpi/ic_launcher_exact.png
+          base64 -d -i build-assets/icon_custom_base64.txt > app/src/main/res/drawable-nodpi/ic_launcher_exact.png
           file app/src/main/res/drawable-nodpi/ic_launcher_exact.png
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug
