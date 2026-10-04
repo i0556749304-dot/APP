@@ -22,17 +22,8 @@ public class OrientationTileService extends TileService {
         Tile t=getQsTile(); if(t==null)return;
         int mode=OrientationUtils.current(this);
         t.setLabel(OrientationUtils.label(mode));
-        t.setIcon(Icon.createWithResource(this, iconFor(mode)));
+        t.setIcon(Icon.createWithResource(this, R.drawable.ic_qs_auto));
         t.setState(mode==OrientationUtils.AUTO?Tile.STATE_INACTIVE:Tile.STATE_ACTIVE);
         t.updateTile();
-    }
-    private int iconFor(int mode){
-        switch(mode){
-            case OrientationUtils.LANDSCAPE:
-            case OrientationUtils.LANDSCAPE_REVERSE:return R.drawable.ic_qs_landscape;
-            case OrientationUtils.PORTRAIT:
-            case OrientationUtils.PORTRAIT_REVERSE:return R.drawable.ic_qs_portrait;
-            default:return R.drawable.ic_qs_auto;
-        }
     }
 }
