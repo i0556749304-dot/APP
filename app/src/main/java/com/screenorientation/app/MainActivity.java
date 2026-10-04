@@ -53,11 +53,11 @@ public class MainActivity extends android.app.Activity {
         TextView hint=text("שנה את הכיוון בלחיצה אחת",13,muted,false); addTopTo(current,3); current.addView(hint,lp(-1,-2));
 
         TextView choose=text("בחר כיוון",19,ink,true); addTop(choose,24);
-        addChoice("אוטומטי","לפי חיישן התנועה",R.drawable.ic_auto,OrientationUtils.AUTO);
-        addChoice("אנכי","רגיל לאורך",R.drawable.ic_portrait,OrientationUtils.PORTRAIT);
-        addChoice("אופקי","רגיל לרוחב",R.drawable.ic_landscape,OrientationUtils.LANDSCAPE);
-        addChoice("אנכי הפוך","לאורך כשהמכשיר הפוך",R.drawable.ic_portrait,OrientationUtils.PORTRAIT_REVERSE);
-        addChoice("אופקי הפוך","לרוחב כשהמכשיר הפוך",R.drawable.ic_landscape,OrientationUtils.LANDSCAPE_REVERSE);
+        addChoice("אוטומטי","↻ סיבוב חופשי לפי חיישן התנועה",R.drawable.ic_auto,OrientationUtils.AUTO);
+        addChoice("אנכי","↕ מסך רגיל לאורך",R.drawable.ic_portrait,OrientationUtils.PORTRAIT);
+        addChoice("אופקי","↔ מסך רגיל לרוחב",R.drawable.ic_landscape,OrientationUtils.LANDSCAPE);
+        addChoice("אנכי הפוך","↕↺ לאורך כשהמכשיר הפוך",R.drawable.ic_rotation,OrientationUtils.PORTRAIT_REVERSE);
+        addChoice("אופקי הפוך","↔↺ לרוחב כשהמכשיר הפוך",R.drawable.ic_rotation,OrientationUtils.LANDSCAPE_REVERSE);
 
         TextView tileTitle=text("הגדרת כפתור ההגדרות המהירות",19,ink,true); addTop(tileTitle,26);
         TextView tileSub=text("בחר מה יקרה בכל לחיצה על הכפתור",13,muted,false); addTop(tileSub,4);
@@ -94,10 +94,13 @@ public class MainActivity extends android.app.Activity {
 
     private void addCredits(){
         LinearLayout credit=card(); credit.setGravity(Gravity.CENTER); addTop(credit,26);
-        TextView made=text("פותח באהבה עבורכם",13,muted,false); made.setGravity(Gravity.CENTER); credit.addView(made,lp(-1,-2));
-        TextView cyber=text("הסייבריסט",18,primary,true); cyber.setGravity(Gravity.CENTER); addTopTo(credit,4); credit.addView(cyber,lp(-1,-2));
+        TextView made=text("פותח ע\"י",12,muted,false); made.setGravity(Gravity.CENTER); credit.addView(made,lp(-1,-2));
+        TextView cyber=text("הסייבריסט",15,primary,false); cyber.setGravity(Gravity.CENTER); addTopTo(credit,3); credit.addView(cyber,lp(-1,-2));
         cyber.setOnClickListener(v->open("https://mitmachim.top/user/%D7%94%D7%A1%D7%99%D7%99%D7%91%D7%A8%D7%99%D7%A1%D7%98"));
-        TextView source=text("קוד המקור ב-GitHub",12,muted,false); source.setGravity(Gravity.CENTER); addTopTo(credit,8); credit.addView(source,lp(-1,-2));
+        TextView forum=text("פורום מתמחים טופ",11,primary,false); forum.setGravity(Gravity.CENTER); addTopTo(credit,2); credit.addView(forum,lp(-1,-2));
+        forum.setOnClickListener(v->open("https://mitmachim.top/user/%D7%94%D7%A1%D7%99%D7%99%D7%91%D7%A8%D7%99%D7%A1%D7%98"));
+        TextView rights=text("© 2026 · כל הזכויות שמורות",10,muted,false); rights.setGravity(Gravity.CENTER); addTopTo(credit,8); credit.addView(rights,lp(-1,-2));
+        TextView source=text("קוד המקור ב-GitHub",11,muted,false); source.setGravity(Gravity.CENTER); addTopTo(credit,7); credit.addView(source,lp(-1,-2));
         source.setOnClickListener(v->open("https://github.com/i0556749304-dot/APP"));
     }
 
